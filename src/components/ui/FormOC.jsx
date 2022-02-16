@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Form,
   Field,
@@ -11,27 +11,35 @@ import { SelectField } from '../common/form/SelectField'
 import { FormTextArea, textAreaValidator } from '../common/form/FormTextArea'
 import httpService from '../../services/service'
 
-export const FormOC = ({ setApiData }) => {
+export const FormOC = ({ setApiData, setLoading }) => {
   const maxInput = 20
-  const maxArea = 120
+  const maxArea = 1120
   const OSarr = ['Debian', 'Ubuntu', 'CentOS', '']
-  const [distro, setDistro] = useState(OSarr[0])
+  const [distro, setDistro ] = useState('')
+  const [selectValidate, setSelValidate] = useState('')
 
   const handleChange = ({ target }) => {
     setDistro(target.value)
   }
+
+  function validate(dataSelect) {
+    if (dataSelect === undefined) setSelValidate('Please select!')
+  }
+
+  useEffect(() => {
+    setSelValidate('')
+  },[distro])
+
   const handleSubmit = async (data) => {
-    console.log(data)
+    validate(data.dis)
+    setLoading(true)
     const dataValue = {
       'os': {
         'name': data.dis,
         'version': data.osversion
       },
-      // 'packages': [...data.packages.split('\n').map(p => p.split(','))]
       'packages': [...data.packages.split('\n').map(p => p.split(', ')).map(p => p.join(' ').split(' '))]
     }
-    console.log(dataValue)
-    console.log(await httpService.send(dataValue))
     const result = await httpService.send(dataValue)
     if (result === 'Request failed with status code 500' || result === 'Response with error') {
       setApiData(result)
@@ -39,9 +47,7 @@ export const FormOC = ({ setApiData }) => {
       const { vulnerableObjects } = result
       setApiData(vulnerableObjects)
     }
-    // const { vulnerableObjects } = await httpService.send(dataValue)
-    // console.log(vulnerableObjects)
-    // setApiData(vulnerableObjects)
+    setLoading(false)
   } 
   return (
     <Form
@@ -53,6 +59,7 @@ export const FormOC = ({ setApiData }) => {
         <FormElement
           style={{
             width: 250,
+            color: 'white'
           }}
         >
           <fieldset className={"k-form-fieldset"}>
@@ -70,13 +77,12 @@ export const FormOC = ({ setApiData }) => {
               id={"dis"}
               name={"dis"}
               label={"OS name:"}
-              // value={distro}
-              // value={formRenderProps.valueGetter("dis")}
               val={distro}
               onChange={handleChange}
               component={SelectField}
               data={OSarr}
             />
+            {selectValidate && <p className="error">{selectValidate}</p>}
             <Field
               id={"packages"}
               name={"packages"}

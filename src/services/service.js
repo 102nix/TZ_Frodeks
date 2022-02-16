@@ -12,14 +12,10 @@ const httpAuth = axios.create({
 const httpService = {
   send: async (payload) => {
     try {
-      console.log(config.apiEndpoint)
-      console.log('!!!', payload)
       const { data } = await httpAuth.post('/', payload)
-      console.log(data)
       return data
     } catch (err) {
       if (err === undefined) return 'Response with error'
-      console.log(err.message)
       return err.message
     }
     

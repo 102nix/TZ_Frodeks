@@ -41,7 +41,7 @@ export const FormTextArea = (fieldRenderProps) => {
           id={id}
           disabled={disabled}
           maxLength={max}
-          rows={4}
+          rows={14}
           ariaDescribedBy={`${hindId} ${errorId}`}
           {...others}
         />
