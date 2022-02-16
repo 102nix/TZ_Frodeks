@@ -1,0 +1,3 @@
+{
+  "apiEndpoint": "https://api.vulns.io/v1/audit/linux/packages" 
+}

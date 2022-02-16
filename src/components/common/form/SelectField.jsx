@@ -1,11 +1,12 @@
 import React from 'react'
 import { DropDownList } from "@progress/kendo-react-dropdowns"
 import { Label } from "@progress/kendo-react-labels"
+import { FieldWrapper } from "@progress/kendo-react-form"
 
 export const SelectField = ({ id, name, val, onChange, data, label }) => {
   
   return (
-    <div>
+    <FieldWrapper>
       <Label
         editorId={id}
       >
@@ -16,12 +17,13 @@ export const SelectField = ({ id, name, val, onChange, data, label }) => {
           width: "300px",
         }}
         data={data}
+        defaultValue={"Change OC"}
         value={val}
         onChange={onChange}
         id={id}
         name={name}
       />
-  </div>
+  </FieldWrapper>
   )
 
 }

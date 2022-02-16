@@ -1,11 +1,11 @@
 import * as React from "react"
 import { FieldWrapper } from "@progress/kendo-react-form"
 import { Label, Hint, Error } from "@progress/kendo-react-labels"
-import { Input } from "@progress/kendo-react-inputs"
+import { TextArea } from "@progress/kendo-react-inputs";
 
-export const inputValidator = (value) => (!value ? "Please enter a text." : "")
+export const textAreaValidator = (value) => (!value ? "Please enter a text." : "");
 
-export const TextField = (fieldRenderProps) => {
+export const FormTextArea = (fieldRenderProps) => {
   const {
     validationMessage,
     touched,
@@ -35,12 +35,13 @@ export const TextField = (fieldRenderProps) => {
         {label}
       </Label>
       <div className={"k-form-field-wrap"}>
-        <Input
+        <TextArea
           valid={valid}
           type={type}
           id={id}
           disabled={disabled}
           maxLength={max}
+          rows={4}
           ariaDescribedBy={`${hindId} ${errorId}`}
           {...others}
         />
@@ -51,7 +52,7 @@ export const TextField = (fieldRenderProps) => {
             right: 0,
           }}
         >
-          {value.length} / {max}
+          {value?.length} / {max}
         </Hint>
         {showHint && <Hint id={hindId}>{hint}</Hint>}
         {showValidationMessage && (
